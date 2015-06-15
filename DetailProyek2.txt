@@ -1,5 +1,0 @@
-m
-n
-2 ui iu
-1
-programmer 1 1 1
