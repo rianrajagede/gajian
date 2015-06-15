@@ -11,7 +11,7 @@ public class MainUI {
 	
 	private static String loginState;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		// TODO Auto-generated method stub
 		System.out.print("Login : ");
@@ -29,7 +29,7 @@ public class MainUI {
 		}
 	}
 	
-	public static void ManajerUI(){
+	public static void ManajerUI() throws IOException{
 		int pilihan, durasi, peoples, n ;
 		String nama, deskripsi,startProyek, akhirProyek;
 		ArrayList<Requirement> reqList= new ArrayList<Requirement>();
@@ -45,7 +45,7 @@ public class MainUI {
 		System.out.println("[3] Konfirmasi Proyek");
 		System.out.print("Pilih : ");
 		
-		try {
+		
 		pilihan = Integer.parseInt(br.readLine());
 		
 		if(pilihan==1){
@@ -83,8 +83,27 @@ public class MainUI {
 			Project project = new Project();
 			project.createProject(nama, deskripsi, durasi, startProyek, akhirProyek, peoples, reqList);
 		}
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		if(pilihan==2){
+			System.out.println("Id proyek yang ingin dihapus : ");
+			String id = br.readLine();
+			
+			System.out.println("Apakah proyek berhasil? (y/n)");
+			String in = br.readLine();
+			if(in.equals("y")){
+				Employee employee = new Employee();
+				employee.updateFinish(id);
+				
+				Project project = new Project();
+				project.deleteProyek(id);
+			}else{
+				Project project = new Project();
+				project.deleteProyek(id);
+			}
+		}
+		
+		if(pilihan==3){
+			
 		}
 	}
 }

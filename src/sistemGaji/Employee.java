@@ -89,6 +89,11 @@ public class Employee {
 	public void setAmmountSalary(double ammountSalary) {
 		this.ammountSalary = ammountSalary;
 	}
+
+	public void updateFinish(String idProyek) {
+	
+		
+	}
 	
 	
 }
