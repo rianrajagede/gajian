@@ -14,16 +14,19 @@ public class Project {
 	private String id;
 	private String name;
 	private String description;
-	private int progress;
+	private int progress, totalMember;
 	private int durationOpen, totalProyek;
 	private String[] allActiveID;
 	private String startProject;
 	private String endProject;
 	private ArrayList<Requirement> reqList;
+	private ArrayList<String> allActiveMember, allActiveMemberType;
+	
 	
 	public Project(){
 		
 	}
+	
 
 	public void createProject(String nama, String deskripsi, int durasi,
 			String startProyek, String akhirProyek, int peoples,
@@ -43,27 +46,29 @@ public class Project {
 		}
 		
 		totalProyek++;
-		saveNewProyek();
+		saveProyek(totalProyek, true);
 		
 		br.close();
 	}
 	
-	private void saveNewProyek(){
+	private void saveProyek(int id, boolean isNew){
 		
 		try {
-			PrintWriter outp = new PrintWriter(new FileOutputStream("DetailProyek"+totalProyek+".txt", false));
-			outp.println(getName()+"\n"+getDescription()+"\n"+getDurationOpen()+" "+getStartProject()+" "+getEndProject());
+			PrintWriter outp = new PrintWriter(new FileOutputStream("DetailProyek"+id+".txt", false));
+			outp.println(getName()+"\n"+getDescription()+"\n"+getDurationOpen()+"\n"+getStartProject()+"\n"+getEndProject());
 			outp.println(reqList.size());
 			for(int i=0;i<reqList.size();i++){
-				outp.println(reqList.get(i).getJenis()+" "+reqList.get(i).getAmmount()+" "+reqList.get(i).getSalary()+" "+reqList.get(i).getLevel());
+				outp.println(reqList.get(i).getJenis()+"\n"+reqList.get(i).getAmmount()+"\n"+reqList.get(i).getSalary()+"\n"+reqList.get(i).getLevel());
 			}
 			outp.close();
 			
-			outp = new PrintWriter(new FileOutputStream("ProyekList.txt", true));
-			outp.println(totalProyek);
-			outp.close();
+			if(isNew){
+				outp = new PrintWriter(new FileOutputStream("ProyekList.txt", true));
+				outp.println(totalProyek);
+				outp.close();
+			}
 			
-			System.out.println("Project Saved!");
+			System.out.println("Project saved!");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,7 +93,86 @@ public class Project {
 		}
 		outp.close();
 		
-		System.out.println("Project Deleted!");
+		System.out.println("Project deleted from board!");
+	}
+	
+	public void getMemberRequest(String id) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("ProyekMember"+id+".txt"));
+		allActiveMember = new ArrayList<String>();
+		allActiveMemberType = new ArrayList<String>();
+		
+		String tmp;
+		String[] tmp2;
+		while((tmp=br.readLine())!=null){
+			tmp2=tmp.split(" ");
+			allActiveMember.add(tmp2[0]);
+			allActiveMemberType.add(tmp2[1]);
+		}
+	}
+	
+	public void getProyekData(String id) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("DetailProyek"+id+".txt"));
+		setName(br.readLine());
+		setDescription(br.readLine());
+		setDurationOpen(Integer.parseInt(br.readLine()));
+		setStartProject(br.readLine());
+		setEndProject(br.readLine());
+		
+		int n=Integer.parseInt(br.readLine());
+		ArrayList<Requirement> reqList = new ArrayList<Requirement>();
+		
+		int total=0;
+		for(int i=0;i<n;i++){
+			Requirement requirement = new Requirement(br.readLine(),Integer.parseInt(br.readLine()),Integer.parseInt(br.readLine()),Integer.parseInt(br.readLine()));
+			reqList.add(requirement);
+			total+=requirement.getAmmount();
+		}
+		setTotalMember(total);
+		setReqList(reqList);
+	}
+
+
+	public void printMemberRequest(String id) throws IOException {
+		System.out.println("Request member dari proyek nomor "+id);
+		
+		getMemberRequest(id);
+		for(int i=0;i<allActiveMember.size();i++){
+			System.out.println((i+1)+" "+allActiveMember.get(i)+" "+allActiveMemberType.get(i));
+		}
+		
+		System.out.println("Requirement yang dibutuhkan : ");
+		getProyekData(id);
+		for(int i=0;i<this.reqList.size();i++){
+			System.out.println(this.reqList.get(i).getJenis()+" sebanyak "+this.reqList.get(i).getAmmount());
+		}System.out.println("Total = "+totalMember+" orang");
+	}
+
+	public void konfirmMember(String id, ArrayList<Integer> idMemberAccepted) throws IOException {
+		getMemberRequest(id);
+		PrintWriter outp = new PrintWriter(new FileOutputStream("ProyekMember"+id+".txt", false));
+		
+		System.out.println("Member Terpilih : ");
+		
+		for(int i=0;i<idMemberAccepted.size();i++){
+			outp.println(allActiveMember.get(idMemberAccepted.get(i)-1)+" "+allActiveMemberType.get(idMemberAccepted.get(i)-1));
+			System.out.println((i+1) + " " +allActiveMember.get(idMemberAccepted.get(i)-1)+" "+allActiveMemberType.get(idMemberAccepted.get(i)-1));
+		}		
+		
+		outp.close();
+	}
+
+	public void updateProyek(String id, String duration) throws IOException {
+		getProyekData(id);
+		setDurationOpen(Integer.parseInt(duration));
+		saveProyek(Integer.parseInt(id), false);
+	}
+	
+	public void setTotalMember(int total) {
+		this.totalMember = total;
+	}
+	
+	public int getTotalMember(){
+		return this.totalMember;
 	}
 	
 	public String getId() {
@@ -154,6 +238,8 @@ public class Project {
 	public void setReqList(ArrayList<Requirement> reqList){
 		this.reqList = reqList;
 	}
+
+
 	
 	
 	

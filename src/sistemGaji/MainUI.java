@@ -13,7 +13,16 @@ public class MainUI {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		// TODO Auto-generated method stub
+		
+//////DEBUGGING        
+//		Project p = new Project();
+//		p.getProyekData("1");
+//		System.out.println(p.getDescription());
+//		System.out.println(p.getEndProject());
+//		for(int i=0;i<p.getReqList().size();i++){
+//			System.out.println(p.getReqList().get(i).getJenis());
+//		}
+		
 		System.out.print("Login : ");
 		
 		try {
@@ -27,6 +36,8 @@ public class MainUI {
 		}else{
 			System.out.println("1");
 		}
+		
+		br.close();
 	}
 	
 	public static void ManajerUI() throws IOException{
@@ -103,7 +114,36 @@ public class MainUI {
 		}
 		
 		if(pilihan==3){
+			System.out.println("id proyek yang ingin dikonfirmasi : ");
+			String id = br.readLine();
 			
+			Project project = new Project();
+			project.printMemberRequest(id);
+			
+			System.out.println("Tentukan tim ? (y/n) ");
+			String in = br.readLine();
+			
+			if(in.equals("y")){
+				ArrayList<Integer> idMemberAccepted = new ArrayList<Integer>();
+				System.out.println("Ketikkan nomor id member yang diterima (dipisah dengan enter) : ");
+				
+				for(int i=0;i<project.getTotalMember();i++){
+					idMemberAccepted.add(Integer.parseInt(br.readLine()));
+				}
+				
+				project.konfirmMember(id, idMemberAccepted);
+				project.deleteProyek(id);
+			}else{
+				System.out.println("Proyek diteruskan ? (y/n)");
+				in = br.readLine();
+				if(in.equals("y")){
+					System.out.println("Durasi tambahan : ");
+					in = br.readLine();
+					project.updateProyek(id,in);
+				}else{
+					project.deleteProyek(id);
+				}
+			}
 		}
 	}
 }
