@@ -68,7 +68,7 @@ public class MainUI {
 				System.out.println("["+i.getId()+"]" + " " + i.getName());
 				System.out.println(i.getDescription());
 				for(Requirement j: i.getReqList()){
-					System.out.println(j.getJenis()+" "+j.getAmmount());
+					System.out.println(j.getJenis()+" sebanyak "+j.getAmmount()+" minimal level "+j.getLevel());
 				}
 				System.out.println("Duration : "+i.getDurationOpen());
 			}
@@ -78,9 +78,10 @@ public class MainUI {
 			idProyekRequested = br.readLine();
 			
 			Project proyek = new Project(idProyekRequested);
-			proyek.AddEmployee(employee);
+			employee.ChooseProject(proyek);
 		}
 		if(pilihan==2){
+			System.out.println("Gaji Anda saat ini : " + employee.getAmmountSalary());
 			System.out.println("Masukkan jumlah nominal yang ingin Anda klaim : ");
 			int nominal = Integer.parseInt(br.readLine());
 			System.out.println("Masukkan nomor rekening tujuan : ");

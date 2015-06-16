@@ -28,12 +28,14 @@ public class Project {
 	private List<Employee> employListRQ;
 	private Map<Jenis, Integer> salaryOfJob;
 	private Map<Jenis, Integer> expOfJob;
+	private Map<Jenis, Integer> minLevelOfJob;
 	private Manager manajer;
 	
 	
 	public Project(){
 		employListRQ = new ArrayList<Employee>();
 		salaryOfJob = new HashMap<Jenis, Integer>();
+		minLevelOfJob = new HashMap<Jenis, Integer>();
 		expOfJob = new HashMap<Jenis, Integer>();
 	}
 	
@@ -57,6 +59,7 @@ public class Project {
 			reqList.add(requirement);
 			salaryOfJob.put(requirement.getJenis(),requirement.getSalary());
 			expOfJob.put(requirement.getJenis(),requirement.getExp());
+			minLevelOfJob.put(requirement.getJenis(),requirement.getLevel());
 			total+=requirement.getAmmount();
 		}
 		setTotalMember(total);
@@ -282,7 +285,15 @@ public class Project {
 		return salaryOfJob;
 	}
 
-	public void setSalaryOfJob(HashMap<Jenis, Integer> salaryOfJob) {
+	public Map<Jenis, Integer> getMinLevelOfJob() {
+		return minLevelOfJob;
+	}
+
+	public void setMinLevelOfJob(Map<Jenis, Integer> minLevelOfJob) {
+		this.minLevelOfJob = minLevelOfJob;
+	}
+
+	public void setSalaryOfJob(Map<Jenis, Integer> salaryOfJob) {
 		this.salaryOfJob = salaryOfJob;
 	}
 
@@ -290,7 +301,7 @@ public class Project {
 		return expOfJob;
 	}
 
-	public void setExpOfJob(HashMap<Jenis, Integer> expOfJob) {
+	public void setExpOfJob(Map<Jenis, Integer> expOfJob) {
 		this.expOfJob = expOfJob;
 	}
 

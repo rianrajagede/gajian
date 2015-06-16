@@ -69,8 +69,12 @@ public class Employee {
 		outp.close();
 	}
 
-	public void ChooseProject(){
-	
+	public void ChooseProject(Project proyek) throws IOException{
+		if(proyek.getMinLevelOfJob().get(this.getJob()) <= this.getLevel()){
+			proyek.AddEmployee(new Employee(this.employeeID));
+		}else{
+			System.out.println("Kamu masih cupu!");
+		}
 	}
 	
 	public void ClaimSalary(int nominal) throws IOException{
@@ -84,7 +88,8 @@ public class Employee {
 	}
 	
 	public void LevelCalculation(){
-		
+		this.level += this.exp / 100;
+		this.exp %= 100;
 	}
 
 	public String getEmployeeID() {
@@ -170,8 +175,6 @@ public class Employee {
 	public void updateFinish(Project proyek) throws IOException {
 		this.ammountSalary += proyek.getSalaryOfJob().get(this.job);
 		this.exp += proyek.getExpOfJob().get(this.job);
-		this.level += this.exp / 100;
-		this.exp %= 100;
 		SaveEmployee();
 	}
 	
