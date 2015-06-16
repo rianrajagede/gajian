@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class MainUI { 	
 	
 	private static String loginState;
+	private static Manager manajer;
+	private static Employee employee;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,8 +33,9 @@ public class MainUI {
 			e.printStackTrace();
 		}
 		
-		if(loginState.equals("manajer")){
-			ManajerUI();
+		if(Integer.parseInt(loginState)%2==0){
+			manajer = new Manager(Integer.parseInt(loginState));
+			ManajerUI(manajer);
 		}else{
 			System.out.println("1");
 		}
@@ -40,7 +43,7 @@ public class MainUI {
 		br.close();
 	}
 	
-	public static void ManajerUI() throws IOException{
+	public static void ManajerUI(Manager manajer) throws IOException{
 		int pilihan, durasi, peoples, n ;
 		String nama, deskripsi,startProyek, akhirProyek;
 		ArrayList<Requirement> reqList= new ArrayList<Requirement>();
@@ -49,7 +52,7 @@ public class MainUI {
 		String inputReq;
 		String[] partReq;
 		
-		System.out.println("Selamat datang Manajer!");
+		System.out.println("Selamat datang "+manajer.getName());
 		System.out.println("Mau apa hari ini?");
 		System.out.println("[1] Buat Proyek");
 		System.out.println("[2] Tutup Proyek");
@@ -92,7 +95,7 @@ public class MainUI {
 			}
 			
 			Project project = new Project();
-			project.createProject(nama, deskripsi, durasi, startProyek, akhirProyek, peoples, reqList);
+			project.createProject(nama, deskripsi, durasi, startProyek, akhirProyek, peoples, reqList, manajer);
 		}
 		
 		if(pilihan==2){

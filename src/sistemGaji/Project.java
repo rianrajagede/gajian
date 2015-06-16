@@ -21,6 +21,7 @@ public class Project {
 	private String endProject;
 	private ArrayList<Requirement> reqList;
 	private ArrayList<String> allActiveMember, allActiveMemberType;
+	private Manager manajer;
 	
 	
 	public Project(){
@@ -30,13 +31,14 @@ public class Project {
 
 	public void createProject(String nama, String deskripsi, int durasi,
 			String startProyek, String akhirProyek, int peoples,
-			ArrayList<Requirement> reqList)  throws IOException {
+			ArrayList<Requirement> reqList, Manager manajer)  throws IOException {
 		setName(nama);
 		setDescription(deskripsi);
 		setDurationOpen(durasi);
 		setReqList(reqList);
 		setStartProject(startProyek);
 		setEndProject(akhirProyek);
+		setManajer(manajer);
 		
 		BufferedReader br = new BufferedReader(new FileReader("ProyekList.txt"));
 		
@@ -56,6 +58,7 @@ public class Project {
 		try {
 			PrintWriter outp = new PrintWriter(new FileOutputStream("DetailProyek"+id+".txt", false));
 			outp.println(getName()+"\n"+getDescription()+"\n"+getDurationOpen()+"\n"+getStartProject()+"\n"+getEndProject());
+			outp.println(getManager().getId());
 			outp.println(reqList.size());
 			for(int i=0;i<reqList.size();i++){
 				outp.println(reqList.get(i).getJenis()+"\n"+reqList.get(i).getAmmount()+"\n"+reqList.get(i).getSalary()+"\n"+reqList.get(i).getLevel());
@@ -165,6 +168,14 @@ public class Project {
 		getProyekData(id);
 		setDurationOpen(Integer.parseInt(duration));
 		saveProyek(Integer.parseInt(id), false);
+	}
+	
+	public void setManajer(Manager manajer){
+		this.manajer = manajer;
+	}
+	
+	public Manager getManager(){
+		return this.manajer;
 	}
 	
 	public void setTotalMember(int total) {

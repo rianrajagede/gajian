@@ -1,5 +1,10 @@
 package sistemGaji;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Manager {
 	
 	private int id;
@@ -10,8 +15,12 @@ public class Manager {
 		
 	}
 	
-	public Manager(String name){
-		this.name = name;
+	public Manager(int id) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("Manajer"+id+".txt"));
+		setId(Integer.parseInt(br.readLine()));
+		setName(br.readLine());
+		setPhoneNum(br.readLine());
+		br.close();
 	}
 	
 	public int getId() {
