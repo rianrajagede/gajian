@@ -1,3 +1,4 @@
+1
 ngerjain mooshak
 netting mooshak gemastik jeh
 12
@@ -5,11 +6,13 @@ netting mooshak gemastik jeh
 22062015
 8
 2
-programmer
+Programmer
 1
+1
+8000000
 20
-20
-tester
+Tester
+1
 1
 10
 20

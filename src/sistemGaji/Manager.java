@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Manager {
 	
-	private int id;
+	private String id;
 	private String name;
 	private String phoneNum;
 	
@@ -15,19 +15,19 @@ public class Manager {
 		
 	}
 	
-	public Manager(int id) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader("Manajer"+id+".txt"));
-		setId(Integer.parseInt(br.readLine()));
+	public Manager(String string) throws IOException{
+		BufferedReader br = new BufferedReader(new FileReader("Manajer"+string+".txt"));
+		setId(br.readLine());
 		setName(br.readLine());
 		setPhoneNum(br.readLine());
 		br.close();
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

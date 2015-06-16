@@ -1,3 +1,4 @@
+0
 tugas pbo
 tugas ngoding pbo jeh
 8
@@ -7,5 +8,6 @@ tugas ngoding pbo jeh
 1
 programmer
 2
+1
 10
 10

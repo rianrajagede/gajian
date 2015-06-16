@@ -5,27 +5,26 @@ public class Requirement {
 	private int level;
 	private int salary;
 	private int ammount;
+	private int exp;
 	
 	public Requirement(){
 		
 	}
 	
-	public Requirement(String jenis, int jumlah, int gaji, int exp) {
+	public Requirement(String jenis, int jumlah, int level, int gaji, int exp) {
 		if(jenis.equals("programmer")) setJenis(Jenis.Programmer);
 		if(jenis.equals("designer")) setJenis(Jenis.Designer);
 		if(jenis.equals("analyst")) setJenis(Jenis.Analyst);
 		if(jenis.equals("tester")) setJenis(Jenis.Tester);
 		setAmmount(jumlah);
 		setSalary(gaji);
-		setLevel(exp);
+		setLevel(level);
+		setExp(exp);
 	}
 
 
-	public String getJenis() {
-		if(this.jenis==Jenis.Programmer) return "programmer";
-		else if(this.jenis==Jenis.Analyst) return "analyst";
-		else if(this.jenis==Jenis.Designer) return "designer";
-		else return "tester";
+	public Jenis getJenis() {
+		return this.jenis;
 	}
 	public void setJenis(Jenis jenis) {
 		this.jenis = jenis;
@@ -47,6 +46,14 @@ public class Requirement {
 	}
 	public void setAmmount(int ammount) {
 		this.ammount = ammount;
+	}
+
+	public int getExp() {
+		return exp;
+	}
+
+	public void setExp(int exp) {
+		this.exp = exp;
 	}
 	
 	

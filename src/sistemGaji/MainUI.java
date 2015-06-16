@@ -1,8 +1,11 @@
 package sistemGaji;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -17,13 +20,7 @@ public class MainUI {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 //////DEBUGGING        
-//		Project p = new Project();
-//		p.getProyekData("1");
-//		System.out.println(p.getDescription());
-//		System.out.println(p.getEndProject());
-//		for(int i=0;i<p.getReqList().size();i++){
-//			System.out.println(p.getReqList().get(i).getJenis());
-//		}
+//		System.out.println(Jenis.a);
 		
 		System.out.print("Login : ");
 		
@@ -34,15 +31,61 @@ public class MainUI {
 		}
 		
 		if(Integer.parseInt(loginState)%2==0){
-			manajer = new Manager(Integer.parseInt(loginState));
+			manajer = new Manager(loginState);
 			ManajerUI(manajer);
 		}else{
-			System.out.println("1");
+			employee = new Employee(loginState);
+			EmployeeUI(employee);
 		}
 		
 		br.close();
 	}
 	
+	private static void EmployeeUI(Employee employee) throws IOException {
+		int pilihan;
+		String idProyek, idProyekRequested;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		ArrayList<Project> proyList = new ArrayList<Project>();
+		
+		System.out.println("Selamat datang "+employee.getName());
+		System.out.println("Mau apa hari ini?");
+		System.out.println("[1] Daftar Proyek");
+		System.out.println("[2] Klaim Gaji");
+		pilihan = Integer.parseInt(br.readLine());
+		
+		if(pilihan==1){
+			BufferedReader brPL = new BufferedReader(new FileReader("ProyekList.txt"));
+			
+			brPL.readLine();
+			while((idProyek = brPL.readLine()) != null){
+				Project proyek = new Project(idProyek);
+				if(proyek.getProgress()==0)
+					proyList.add(proyek);
+			}
+			
+			for(Project i: proyList){
+				System.out.println();
+				System.out.println("["+i.getId()+"]" + " " + i.getName());
+				System.out.println(i.getDescription());
+				for(Requirement j: i.getReqList()){
+					System.out.println(j.getJenis()+" "+j.getAmmount());
+				}
+				System.out.println("Duration : "+i.getDurationOpen());
+			}
+			
+			System.out.println();
+			System.out.println("Pilih ID proyek yang mau diikuti : ");
+			idProyekRequested = br.readLine();
+			
+			Project proyek = new Project(idProyekRequested);
+			proyek.AddEmployee(employee);
+		}
+		if(pilihan==2){
+			
+		}
+		
+	}
+
 	public static void ManajerUI(Manager manajer) throws IOException{
 		int pilihan, durasi, peoples, n ;
 		String nama, deskripsi,startProyek, akhirProyek;
@@ -57,6 +100,7 @@ public class MainUI {
 		System.out.println("[1] Buat Proyek");
 		System.out.println("[2] Tutup Proyek");
 		System.out.println("[3] Konfirmasi Proyek");
+		System.out.println("[0] Keluar");
 		System.out.print("Pilih : ");
 		
 		
@@ -81,7 +125,7 @@ public class MainUI {
 			System.out.println("Jumlah anggota tim : ");
 			peoples = Integer.parseInt(br.readLine());
 			
-			System.out.println("Tuliskan spesifikasi kebutuhan tim dengan format \"tipe(spasi)jumlah(spasi)gaji(spasi)exp\" : ");
+			System.out.println("Tuliskan spesifikasi kebutuhan tim dengan format \"tipe(spasi)jumlah(spasi)levelMinimal(spasi)gaji(spasi)exp\" : ");
 			System.out.println("Tipe [programmer, designer, analyst, tester]");
 			
 			n=peoples;
@@ -89,13 +133,12 @@ public class MainUI {
 				System.out.print("> ");
 				inputReq = br.readLine();
 				partReq = inputReq.split(" ");
-				Requirement requirement = new Requirement(partReq[0], Integer.parseInt(partReq[1]), Integer.parseInt(partReq[2]),Integer.parseInt(partReq[3]));
+				Requirement requirement = new Requirement(partReq[0], Integer.parseInt(partReq[1]), Integer.parseInt(partReq[2]),Integer.parseInt(partReq[3]),Integer.parseInt(partReq[4]));
 				reqList.add(requirement);
 				n-=Integer.parseInt(partReq[1]);
 			}
 			
-			Project project = new Project();
-			project.createProject(nama, deskripsi, durasi, startProyek, akhirProyek, peoples, reqList, manajer);
+			Project project = new Project(nama, deskripsi, durasi, startProyek, akhirProyek, peoples, reqList, manajer);
 		}
 		
 		if(pilihan==2){
@@ -105,14 +148,19 @@ public class MainUI {
 			System.out.println("Apakah proyek berhasil? (y/n)");
 			String in = br.readLine();
 			if(in.equals("y")){
-				Employee employee = new Employee();
-				employee.updateFinish(id);
+				Project proyek = new Project(id);
 				
-				Project project = new Project();
-				project.deleteProyek(id);
+				BufferedReader brMember = new BufferedReader(new FileReader("ProyekMember"+id+".txt"));
+				String idMember;
+				while((idMember=brMember.readLine())!=null){
+						Employee employee = new Employee(idMember);
+						employee.updateFinish(proyek);
+				}
+				
+				proyek.deleteProyek();
 			}else{
-				Project project = new Project();
-				project.deleteProyek(id);
+				Project proyek = new Project(id);
+				proyek.deleteProyek();
 			}
 		}
 		
@@ -120,31 +168,32 @@ public class MainUI {
 			System.out.println("id proyek yang ingin dikonfirmasi : ");
 			String id = br.readLine();
 			
-			Project project = new Project();
-			project.printMemberRequest(id);
+			Project project = new Project(id);
+			project.printMemberRequest();
 			
 			System.out.println("Tentukan tim ? (y/n) ");
 			String in = br.readLine();
 			
 			if(in.equals("y")){
-				ArrayList<Integer> idMemberAccepted = new ArrayList<Integer>();
+				ArrayList<String> idMemberAccepted = new ArrayList<String>();
 				System.out.println("Ketikkan nomor id member yang diterima (dipisah dengan enter) : ");
 				
 				for(int i=0;i<project.getTotalMember();i++){
-					idMemberAccepted.add(Integer.parseInt(br.readLine()));
+					idMemberAccepted.add(br.readLine());
 				}
 				
-				project.konfirmMember(id, idMemberAccepted);
-				project.deleteProyek(id);
+				project.konfirmMember(idMemberAccepted);
+				project.setProgress(1);
+				project.saveProyek(false);
 			}else{
 				System.out.println("Proyek diteruskan ? (y/n)");
 				in = br.readLine();
 				if(in.equals("y")){
 					System.out.println("Durasi tambahan : ");
 					in = br.readLine();
-					project.updateProyek(id,in);
+					project.updateProyek(in);
 				}else{
-					project.deleteProyek(id);
+					project.deleteProyek();
 				}
 			}
 		}
