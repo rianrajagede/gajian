@@ -66,7 +66,7 @@ public class Project {
 		setReqList(reqList);
 	}
 	
-	public void AddEmployee(Employee employee) throws IOException{
+	public void addEmployee(Employee employee) throws IOException{
 		PrintWriter outp = new PrintWriter(new FileOutputStream("ProyekMember"+this.id+".txt", true));
 		outp.println(employee.getEmployeeID());
 		System.out.println("Kamu telah terdaftar");
@@ -149,7 +149,7 @@ public class Project {
 		System.out.println("Project deleted from board!");
 	}
 	
-	public void getMemberRequest(String id) throws IOException{
+	public void loadMemberRequest(String id) throws IOException{
 		BufferedReader br = new BufferedReader(new FileReader("ProyekMember"+id+".txt"));
 		
 		String tmp;
@@ -161,7 +161,7 @@ public class Project {
 	public void printMemberRequest() throws IOException {
 		System.out.println("Request member dari proyek nomor "+getId());
 		
-		getMemberRequest(getId());
+		loadMemberRequest(getId());
 		for(int i=0;i<employListRQ.size();i++){
 			Employee e = employListRQ.get(i);
 			System.out.println("["+e.getEmployeeID()+"] "+e.getName()+" "+e.getJob()+" "+e.getLevel());
@@ -180,8 +180,8 @@ public class Project {
 	 * 
 	 * id-id yang diterima
 	 */
-	public void konfirmMember(ArrayList<String> idMemberAccepted) throws IOException {
-		getMemberRequest(this.id);
+	public void konfirmRequest(ArrayList<String> idMemberAccepted) throws IOException {
+		loadMemberRequest(this.id);
 		PrintWriter outp = new PrintWriter(new FileOutputStream("ProyekMember"+this.id+".txt", false));
 		
 		System.out.println("Member Terpilih : ");

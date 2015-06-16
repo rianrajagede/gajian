@@ -71,7 +71,7 @@ public class Employee {
 
 	public void ChooseProject(Project proyek) throws IOException{
 		if(proyek.getMinLevelOfJob().get(this.getJob()) <= this.getLevel()){
-			proyek.AddEmployee(new Employee(this.employeeID));
+			proyek.addEmployee(new Employee(this.employeeID));
 		}else{
 			System.out.println("Kamu masih cupu!");
 		}
@@ -87,9 +87,12 @@ public class Employee {
 		}
 	}
 	
-	public void LevelCalculation(){
+	public void levelCalculation(Project proyek) throws IOException {
+		this.ammountSalary += proyek.getSalaryOfJob().get(this.job);
+		this.exp += proyek.getExpOfJob().get(this.job);
 		this.level += this.exp / 100;
 		this.exp %= 100;
+		SaveEmployee();
 	}
 
 	public String getEmployeeID() {
@@ -170,12 +173,6 @@ public class Employee {
 
 	public void setProyList(ArrayList<Project> proyList) {
 		this.proyList = proyList;
-	}
-
-	public void updateFinish(Project proyek) throws IOException {
-		this.ammountSalary += proyek.getSalaryOfJob().get(this.job);
-		this.exp += proyek.getExpOfJob().get(this.job);
-		SaveEmployee();
 	}
 	
 	

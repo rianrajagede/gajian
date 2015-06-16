@@ -159,7 +159,7 @@ public class MainUI {
 				String idMember;
 				while((idMember=brMember.readLine())!=null){
 						Employee employee = new Employee(idMember);
-						employee.updateFinish(proyek);
+						employee.levelCalculation(proyek);
 				}
 				
 				proyek.deleteProyek();
@@ -187,7 +187,7 @@ public class MainUI {
 					idMemberAccepted.add(br.readLine());
 				}
 				
-				project.konfirmMember(idMemberAccepted);
+				project.konfirmRequest(idMemberAccepted);
 				project.setProgress(1);
 				project.saveProyek(false);
 			}else{
