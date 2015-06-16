@@ -73,8 +73,14 @@ public class Employee {
 	
 	}
 	
-	public void ClaimSalary(){
-		
+	public void ClaimSalary(int nominal) throws IOException{
+		if(nominal > this.ammountSalary){
+			System.out.println("Ngimpi!");
+		}else{
+			this.ammountSalary-=nominal;
+			System.out.println("Gaji berhasil ditransfer");
+			SaveEmployee();
+		}
 	}
 	
 	public void LevelCalculation(){

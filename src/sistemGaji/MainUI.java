@@ -81,7 +81,11 @@ public class MainUI {
 			proyek.AddEmployee(employee);
 		}
 		if(pilihan==2){
-			
+			System.out.println("Masukkan jumlah nominal yang ingin Anda klaim : ");
+			int nominal = Integer.parseInt(br.readLine());
+			System.out.println("Masukkan nomor rekening tujuan : ");
+			br.readLine();
+			employee.ClaimSalary(nominal);
 		}
 		
 	}
