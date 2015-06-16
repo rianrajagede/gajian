@@ -82,8 +82,8 @@ public class Employee {
 			System.out.println("Ngimpi!");
 		}else{
 			this.ammountSalary-=nominal;
-			System.out.println("Gaji berhasil ditransfer");
 			SaveEmployee();
+			System.out.println("Gaji berhasil ditransfer, gajimu saat ini : " + this.ammountSalary);
 		}
 	}
 	
