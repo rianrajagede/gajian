@@ -1,2 +1,2 @@
 ##Sistem Gajian
-Prject for Object Oriented Class
+Project for Object Oriented Class
